@@ -1,6 +1,7 @@
 package Lab4P2_MarioCalix_22041098;
 
 import Lab3P2_MarioCalix_22041098.Entrenador;
+import Semana3.Mascota;
 import Semana4.miExcepcion2;
 
 import java.util.ArrayList;

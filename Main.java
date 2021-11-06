@@ -1,26 +1,21 @@
 package Lab4P2_MarioCalix_22041098;
 
-import Lab3P2_MarioCalix_22041098.Entrenador;
-import Semana3.Dragon;
-import Semana3.Perro;
-import Tarea1.Vehiculo;
+import Semana4.miExcepcion;
 
 import javax.swing.*;
 import java.awt.*;
-import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
+import java.util.Random;
 
 public class Main {
-    public static void main(String[] args) {
-        ArrayList inventario = new ArrayList();
-        ArrayList listaEscuadrones = new ArrayList();
-        ArrayList Escuadron = new ArrayList();
+    public static void main(String[] args) throws ExcepcionEs {
+        ArrayList <Zonas>inventario = new ArrayList();
+        ArrayList <Escuadrones> listaEscuadrones = new ArrayList();
         ArrayList <Soldados>listaSoldados = new ArrayList();
-        ArrayList soldadosEscuadron = new ArrayList();
+
         int opcion = 0;
-        while (opcion != 12) {
+        while (opcion != 14) {
             opcion = Integer.parseInt(
                     JOptionPane.showInputDialog("1. Crear zona\n" +
                                                 "2. Listar zonas\n" +
@@ -29,11 +24,13 @@ public class Main {
                                                 "5. Listar escuadron\n" +
                                                 "6. Eliminar escuadron\n" +
                                                 "7. Añadir soldado\n" +
-                                                "8. Listar soldados\n" +
-                                                "9. Listar soldados de escuadron por tipo\n" +
-                                                "10. Eliminar soldados de escuadron\n" +
-                                                "11. Pelear\n" +
-                                                "12. Salir\n")
+                                                "8. Asignar soldado a Escuadron\n" +
+                                                "9. Listar soldados\n" +
+                                                "10. Listar soldados de escuadron por tipo\n" +
+                                                "11. Eliminar soldados de escuadron\n" +
+                                                "12. Pelear\n" +
+                                                "13. Asignar Zona a Escuadron\n" +
+                                                "14. Salir\n")
             );
 
             //CREAR ZONAS
@@ -66,11 +63,11 @@ public class Main {
                 //ArrayList z,s;
                 n=JOptionPane.showInputDialog("Nombre");
 
-                inventario.add(new Escuadrones(n,new ArrayList<Zonas>(),new ArrayList<Soldados>()));
+                listaEscuadrones.add(new Escuadrones(n,new ArrayList(),new ArrayList()));
                 JOptionPane.showMessageDialog(null, "Escuadron creado exitosamente.");
             }
 
-            //LISTAR ESCUADRON
+            //LISTAR ESCUADRONES
             if(opcion == 4){
                 String salida="";
                 for (Object x: listaEscuadrones) {
@@ -81,12 +78,11 @@ public class Main {
                 JOptionPane.showMessageDialog(null, salida);
             }
 
+            //LISTAR ESCUADRON
             if(opcion == 5){
-                String salida="";
-                for (Object o: Escuadron) {
-                    salida+=Escuadron.indexOf(o)+"- "+o+"\n";
+                for (Escuadrones temp: listaEscuadrones) {
+                    JOptionPane.showMessageDialog(null,temp);
                 }
-                JOptionPane.showMessageDialog(null, salida);
             }
 
             //ELIMINAR ESCUADRON
@@ -132,21 +128,22 @@ public class Main {
                     int na,d;
                     listaSoldados.add(new capitan(n,r,e,v,new Date(),"Lanzallamas",110));
                 }else if(tipo == 4){
-                    int []dano,na,d;
-                    String []arma;
-                    //listaSoldado.add(new superSoldado(n,r,e,1000,new Date(),"Todas las armas",450));
+                    Random ran = new Random();
+                    int da,na,d;
+                    String arma;
+                    listaSoldados.add(new superSoldado(n,r,e,1000,new Date(),new String[ran.nextInt()],new int[ran.nextInt()]));
                 }
 
             }
-                //*************************Asioganr soldado a escuadron
-            if(opcion == 13){
+            //Asignar soldado a escuadron
+            if(opcion == 8){
                 int pe, ps;
-                pe=Integer.parseInt(JOptionPane.showInputDialog("Posicion de escuadron"));
-                ps=Integer.parseInt(JOptionPane.showInputDialog("Posicion del soldado"));
-                //listaEscuadrones.get(pe).getlistaSoldados().add(inventario.get(ps));
+                pe=Integer.parseInt(JOptionPane.showInputDialog("Posicion de Escuadron"));
+                ps=Integer.parseInt(JOptionPane.showInputDialog("Posicion de soldado"));
+                listaEscuadrones.get(pe).getlistaSoldados().add(listaSoldados.get(ps));
             }
 
-            if(opcion == 8){
+            if(opcion == 9){
                 String salida="";
                 for (Object o: listaSoldados) {
                     if (o instanceof Soldados) {
@@ -156,8 +153,94 @@ public class Main {
                 JOptionPane.showMessageDialog(null, salida);
             }
 
-            if(opcion == 11){
+            //LISTAR TIPOS DE SOLDADOS
+            if(opcion == 10) {
+                int tipo;
+                tipo = Integer.parseInt(JOptionPane.showInputDialog("Selecione el tipo de Soldados a listar\n" +
+                        "1-infanteria ligera\n" +
+                        "2-infanteria pesada\n" +
+                        "3-Sargento\n" +
+                        "4-Capitan\n" +
+                        "5-SuperSoldado"));
+                String salida = "";
+                if (tipo == 1) {
+                    for (Object o : listaSoldados) {
+                        if (o instanceof ligera) {
+                            salida += listaSoldados.indexOf(o) + "- " + o + "\n";
+                        }
+                    }
+                    JOptionPane.showMessageDialog(null, salida);
+                }else if (tipo == 2) {
+                    for (Object o : listaSoldados) {
+                        if (o instanceof ligera) {
+                            salida += listaSoldados.indexOf(o) + "- " + o + "\n";
+                        }
+                    }
+                    JOptionPane.showMessageDialog(null, salida);
+                }else if (tipo == 3) {
+                    for (Object o : listaSoldados) {
+                        if (o instanceof sargento) {
+                            salida += listaSoldados.indexOf(o) + "- " + o + "\n";
+                        }
+                    }
+                    JOptionPane.showMessageDialog(null, salida);
+                }else if (tipo == 4) {
+                    for (Object o : listaSoldados) {
+                        if (o instanceof capitan) {
+                            salida += listaSoldados.indexOf(o) + "- " + o + "\n";
+                        }
+                    }
+                    JOptionPane.showMessageDialog(null, salida);
+                }else if (tipo == 5) {
+                    for (Object o : listaSoldados) {
+                        if (o instanceof superSoldado) {
+                            salida += listaSoldados.indexOf(o) + "- " + o + "\n";
+                        }
+                    }
+                    JOptionPane.showMessageDialog(null, salida);
+                }
+            }
 
+            //Eliminar soldados de escuadron
+            if(opcion == 11){
+                int pos,posS;
+                pos=Integer.parseInt(
+                        JOptionPane.showInputDialog("Indique la posicion de escuadron"));
+                posS=Integer.parseInt(JOptionPane.showInputDialog("Posicion del soldado que desea eliminar"));
+                listaEscuadrones.get(pos).listaSoldados.remove(posS);
+                JOptionPane.showMessageDialog(null,"Soldado eliminado" +
+                        " exitosamente");
+            }
+
+            //PELEA
+            if(opcion == 12){
+                int es, es2;
+                int s1,s2;
+                JOptionPane.showMessageDialog(null, "Escoga los escuadrones");
+                es=Integer.parseInt(JOptionPane.showInputDialog("Posicion de escuadron 1"));
+                es2=Integer.parseInt(JOptionPane.showInputDialog("Posicion de escuadron 2"));
+
+                JOptionPane.showMessageDialog(null,listaEscuadrones.get(es).getNombre()+" peleara" +
+                        " contra el escuadron "+listaEscuadrones.get(es2).getNombre());
+
+                JOptionPane.showMessageDialog(null, "Escoga la posicion " +
+                        "de soldado a atacar.");
+                s1=Integer.parseInt(JOptionPane.showInputDialog("Posicion del soldado del escuadron 1"));
+                s2=Integer.parseInt(JOptionPane.showInputDialog("Posicion del soldado del escuadron 2"));
+                JOptionPane.showMessageDialog(null,listaEscuadrones.get(es).listaSoldados.get(s1).getNombre()+
+                        " peleara contra el soldado "+listaEscuadrones.get(es2).listaSoldados.get(s2).getNombre());
+
+                JOptionPane.showMessageDialog(null,listaEscuadrones.get(es).listaSoldados.get(s1).getNombre()+
+                        " ataco a "+listaEscuadrones.get(es2).listaSoldados.get(s2).getNombre()+ "haciendole "+
+                        listaSoldados.get(es));
+            }
+
+            //ASIGNAR ZONA A ESCUADRON
+            if(opcion == 13){
+                int pz, pe;
+                pe=Integer.parseInt(JOptionPane.showInputDialog("Posicion de Escuadron"));
+                pz=Integer.parseInt(JOptionPane.showInputDialog("Posicion de Zona"));
+                listaEscuadrones.get(pe).getListaZonas().add(inventario.get(pz));
             }
 
 
